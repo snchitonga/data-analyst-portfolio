@@ -1,67 +1,55 @@
-Python Movie Correlation Project
+🎬 Python Movie Correlation Project
 Overview
 
-This project analyzes 6820 movies from 1986–2016 to explore correlations between movie attributes such as budget, gross revenue, runtime, IMDb score, and votes. The goal is to understand trends in the movie industry and factors that influence revenue and ratings.
+This project analyzes 6,820 movies from 1986–2016 to explore correlations between movie attributes such as budget, gross revenue, runtime, IMDb score, and votes.
+The goal is to uncover trends in the movie industry and identify factors that influence revenue and ratings.
 
 Dataset
 
 Source: Kaggle / IMDb
 
-Location: data/movies.csv
+Location in repo: data/movies.csv
 
-Contents:
+Columns include:
 
-budget – movie budget (some missing values)
-
-gross – revenue
-
-company – production company
-
-country – country of origin
-
-director – director
-
-genre – main genre
-
-name – movie title
-
-rating – movie rating (R, PG, etc.)
-
-released – release date (YYYY-MM-DD)
-
-runtime – duration in minutes
-
-score – IMDb rating
-
-votes – number of votes
-
-star – main actor/actress
-
-writer – writer
-
-year – release year
-
-
-
+Column	Description
+budget	Movie budget (some missing values)
+gross	Revenue generated
+company	Production company
+country	Country of origin
+director	Movie director
+genre	Main genre
+name	Movie title
+rating	Movie rating (R, PG, etc.)
+released	Release date (YYYY-MM-DD)
+runtime	Duration in minutes
+score	IMDb rating
+votes	Number of votes
+star	Main actor/actress
+writer	Writer
+year	Release year
 Steps Performed
 
-Data Cleaning – handled missing values, formatted dates, and replaced zeros in budget/gross.
+Data Cleaning – Handled missing values, formatted dates, and replaced zeros in budget and gross.
 
-Exploratory Data Analysis (EDA) – explored distributions, outliers, and trends.
+Exploratory Data Analysis (EDA) – Explored distributions, outliers, and trends in the dataset.
 
-Correlation Analysis – computed correlations between numeric attributes.
+Correlation Analysis – Computed correlations between numeric attributes to understand relationships.
 
-Visualizations – scatter plots, heatmaps, and trend charts.
+Visualizations – Created scatter plots, heatmaps, and trend charts to illustrate findings.
 
-Insights – interpreted correlations and trends in the movie industry.
+Insights – Interpreted correlations and industry trends based on analysis.
 
 How to Run
 
-Clone the repo.
+Clone the repository:
+
+git clone <your-repo-url>
+
 
 Install dependencies:
 
-pip install pandas numpy matplotlib seaborn
+pip install pandas numpy matplotlib seaborn jupyter
 
 
 Open the notebook:
@@ -69,7 +57,7 @@ Open the notebook:
 jupyter notebook notebooks/movie_correlation_analysis.ipynb
 
 
-Run all cells to reproduce analysis and visualizations.
+Run all cells to reproduce the analysis and visualizations.
 
 Key Insights
 
