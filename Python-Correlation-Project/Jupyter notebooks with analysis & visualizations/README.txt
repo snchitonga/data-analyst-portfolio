@@ -41,22 +41,7 @@ writer – writer
 
 year – release year
 
-Note: Do not confuse the dataset with the analysis code. The dataset is read-only; all analysis is in the notebook.
 
-Project Structure
-Python-Correlation-Project/
-│
-├── data/                <- Raw and cleaned datasets
-│   └── movies.csv
-│
-├── notebooks/           <- Jupyter notebooks with analysis & visualizations
-│   └── movie_correlation_analysis.ipynb
-│
-├── scripts/             <- Optional: Python scripts for data cleaning or reusable functions
-│   └── data_cleaning.py
-│
-├── README.md            <- Project overview and instructions
-└── .gitignore           <- Optional
 
 Steps Performed
 
