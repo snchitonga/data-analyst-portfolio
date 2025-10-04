@@ -1,70 +1,71 @@
 /* ============================================================================
-   SQL ANALYTICS PROJECT SCRIPT: E-COMMERCE SALES PERFORMANCE
+   📊 SQL ANALYTICS PROJECT: E-COMMERCE SALES PERFORMANCE
    ============================================================================
-   PURPOSE:
-   Comprehensive analytical view of sales, customer, and product performance 
-   using advanced SQL techniques: Window Functions, CTEs, CASE statements, Joins, 
-   and data cleansing.
 
-   DATASETS USED:
-   - `gold.fact_sales` (f): transactional data (sales, quantity, price, dates)
-   - `gold.dim_customers` (c): customer demographic data
-   - `gold.dim_products` (p): product and category data
+   🎯 PURPOSE:
+   A comprehensive analytical view of sales, customer, and product performance 
+   using advanced SQL techniques such as Window Functions, CTEs, CASE statements, 
+   Joins, and data cleansing.
 
-   PLATFORM NOTE:
-   MySQL-specific functions used: DATE_FORMAT, TIMESTAMPDIFF, DATEDIFF, STR_TO_DATE
+   🧾 DATASETS USED:
+   - gold.fact_sales (f): transactional data (sales, quantity, price, dates)
+   - gold.dim_customers (c): customer demographic data
+   - gold.dim_products (p): product and category data
 
-   TABLE OF CONTENTS:
+   ⚙️ PLATFORM:
+   Designed for MySQL (functions used: DATE_FORMAT, TIMESTAMPDIFF, DATEDIFF, STR_TO_DATE)
+
+   📚 TABLE OF CONTENTS:
    1️. Monthly Sales & Customer Metrics
    2️. Monthly Sales by Month Start Date
    3️. Monthly Sales Running Total & Moving Average Price
-   4️.Yearly Performance per Product
-   5️.Category Sales Contribution
-   6️.Product Cost Segmentation
-   7️.Customer Spending & Segmentation
-   8️.Customer Orders & Age Analysis
-   9️.Customer Summary Metrics
-   10. 	Null Data Check
-   11️. Top 10 Products by Sales
-   12️. Month-Over-Month Sales Analysis
-=========================================================================== */
+   4️. Yearly Performance per Product
+   5️. Category Sales Contribution
+   6️. Product Cost Segmentation
+   7️. Customer Spending & Segmentation
+   8️. Customer Orders & Age Analysis
+   9️. Customer Summary Metrics
+   10. Null Data Check
+   11. Top 10 Products by Sales
+   12. Month-Over-Month Sales Analysis
+============================================================================ */
 
 /* ============================================================================
    1️. MONTHLY SALES & CUSTOMER METRICS
-=========================================================================== */
+============================================================================ */
 SELECT
     YEAR(order_date) AS order_year,
     MONTH(order_date) AS order_month,
     SUM(sales_amount) AS total_sales,
     COUNT(DISTINCT customer_key) AS total_customers,
     SUM(quantity) AS total_quantity
-FROM `gold.fact_sales`
+FROM gold.fact_sales
 WHERE order_date IS NOT NULL
 GROUP BY YEAR(order_date), MONTH(order_date)
 ORDER BY YEAR(order_date), MONTH(order_date);
 
 /* ============================================================================
    2️. MONTHLY SALES BY MONTH START DATE
-=========================================================================== */
+============================================================================ */
 SELECT
     DATE_FORMAT(order_date, '%Y-%m-01') AS order_month_start,
     SUM(sales_amount) AS total_sales,
     COUNT(DISTINCT customer_key) AS total_customers,
     SUM(quantity) AS total_quantity
-FROM `gold.fact_sales`
+FROM gold.fact_sales
 WHERE order_date IS NOT NULL
 GROUP BY DATE_FORMAT(order_date, '%Y-%m-01')
 ORDER BY order_month_start;
 
 /* ============================================================================
    3️. MONTHLY SALES RUNNING TOTAL & MOVING AVERAGE PRICE
-=========================================================================== */
+============================================================================ */
 WITH monthly_sales AS (
     SELECT
         DATE_FORMAT(order_date, '%Y-%m-01') AS order_date,
         SUM(sales_amount) AS total_sales,
         AVG(price) AS avg_price
-    FROM `gold.fact_sales`
+    FROM gold.fact_sales
     WHERE order_date IS NOT NULL
     GROUP BY DATE_FORMAT(order_date, '%Y-%m-01')
 )
@@ -80,15 +81,14 @@ ORDER BY order_date;
 
 /* ============================================================================
    4️. YEARLY PERFORMANCE PER PRODUCT
-=========================================================================== */
+============================================================================ */
 WITH yearly_product_sales AS (
     SELECT
         YEAR(f.order_date) AS order_year,
         p.product_name,
         SUM(f.sales_amount) AS current_sales
-    FROM `gold.fact_sales` f
-    LEFT JOIN `gold.dim_products` p 
-        ON f.product_key = p.product_key
+    FROM gold.fact_sales f
+    LEFT JOIN gold.dim_products p ON f.product_key = p.product_key
     WHERE f.order_date IS NOT NULL
       AND p.product_name IS NOT NULL
     GROUP BY YEAR(f.order_date), p.product_name
@@ -107,10 +107,8 @@ SELECT
     current_sales,
     ROUND(AVG(current_sales) OVER (PARTITION BY product_name), 0) AS avg_sales,
     CASE 
-        WHEN current_sales > AVG(current_sales) OVER (PARTITION BY product_name) 
-            THEN 'Above Avg'
-        WHEN current_sales < AVG(current_sales) OVER (PARTITION BY product_name) 
-            THEN 'Below Avg'
+        WHEN current_sales > AVG(current_sales) OVER (PARTITION BY product_name) THEN 'Above Avg'
+        WHEN current_sales < AVG(current_sales) OVER (PARTITION BY product_name) THEN 'Below Avg'
         ELSE 'Equal to Avg'
     END AS avg_change,
     prev_year_sales,
@@ -126,14 +124,13 @@ ORDER BY product_name, order_year;
 
 /* ============================================================================
    5️. CATEGORY SALES CONTRIBUTION
-=========================================================================== */
+============================================================================ */
 WITH category_sales AS (
     SELECT
         p.category AS category_name,
         SUM(f.sales_amount) AS total_sales
-    FROM `gold.fact_sales` f
-    LEFT JOIN `gold.dim_products` p
-        ON f.product_key = p.product_key
+    FROM gold.fact_sales f
+    LEFT JOIN gold.dim_products p ON f.product_key = p.product_key
     WHERE f.sales_amount IS NOT NULL
       AND p.category IS NOT NULL
     GROUP BY p.category
@@ -148,7 +145,7 @@ ORDER BY total_sales DESC;
 
 /* ============================================================================
    6️. PRODUCT COST SEGMENTATION
-=========================================================================== */
+============================================================================ */
 WITH product_segments AS (
     SELECT
         product_key,
@@ -160,7 +157,7 @@ WITH product_segments AS (
             WHEN cost BETWEEN 500 AND 999.99 THEN '500-999'
             ELSE '1000 and above'
         END AS cost_range
-    FROM `gold.dim_products`
+    FROM gold.dim_products
     WHERE cost IS NOT NULL
 )
 SELECT
@@ -172,7 +169,7 @@ ORDER BY total_products DESC;
 
 /* ============================================================================
    7️. CUSTOMER SPENDING & SEGMENTATION
-=========================================================================== */
+============================================================================ */
 WITH customer_spending AS (
     SELECT
         c.customer_key,
@@ -181,9 +178,8 @@ WITH customer_spending AS (
         MAX(f.order_date) AS last_order,
         TIMESTAMPDIFF(MONTH, MIN(f.order_date), MAX(f.order_date)) AS lifespan_months,
         COUNT(f.order_date) AS total_orders
-    FROM `gold.fact_sales` f
-    LEFT JOIN `gold.dim_customers` c
-        ON f.customer_key = c.customer_key
+    FROM gold.fact_sales f
+    LEFT JOIN gold.dim_customers c ON f.customer_key = c.customer_key
     WHERE f.sales_amount IS NOT NULL
       AND c.customer_key IS NOT NULL
     GROUP BY c.customer_key
@@ -203,7 +199,7 @@ ORDER BY customer_segment, total_spending DESC;
 
 /* ============================================================================
    8️. CUSTOMER ORDERS & AGE ANALYSIS
-=========================================================================== */
+============================================================================ */
 WITH base_query AS (
     SELECT
         f.order_number,
@@ -221,20 +217,18 @@ WITH base_query AS (
                 THEN CAST(c.birthdate AS UNSIGNED)
             ELSE NULL
         END AS age
-    FROM `gold.fact_sales` f
-    LEFT JOIN `gold.dim_customers` c
-        ON c.customer_key = f.customer_key
+    FROM gold.fact_sales f
+    LEFT JOIN gold.dim_customers c ON c.customer_key = f.customer_key
     WHERE f.order_date IS NOT NULL
       AND c.customer_key IS NOT NULL
 )
 SELECT *
 FROM base_query
 LIMIT 500;
+
 /* ============================================================================
    9️⃣ CUSTOMER SUMMARY METRICS
-   ============================================================================
-   Overview of customer orders, spending, and lifespan.
-=========================================================================== */
+============================================================================ */
 WITH base_data AS (
     SELECT
         f.order_number,
@@ -252,9 +246,8 @@ WITH base_data AS (
                 THEN CAST(c.birthdate AS UNSIGNED)
             ELSE NULL
         END AS age
-    FROM `gold.fact_sales` f
-    LEFT JOIN `gold.dim_customers` c
-        ON c.customer_key = f.customer_key
+    FROM gold.fact_sales f
+    LEFT JOIN gold.dim_customers c ON c.customer_key = f.customer_key
     WHERE f.order_date IS NOT NULL
       AND c.customer_key IS NOT NULL
 )
@@ -273,40 +266,33 @@ FROM base_data
 GROUP BY customer_key, customer_number, customer_name, age
 LIMIT 500;
 
-
 /* ============================================================================
    10️⃣ NULL DATA CHECK
-   ============================================================================
-   Count of records with missing order_date or sales_amount for data quality.
-=========================================================================== */
+============================================================================ */
 SELECT COUNT(*) AS null_orders
-FROM `gold.fact_sales`
+FROM gold.fact_sales
 WHERE order_date IS NULL OR sales_amount IS NULL;
-
 
 /* ============================================================================
    11️⃣ TOP 10 PRODUCTS BY SALES
-   ============================================================================
-   Identify highest-grossing products.
-=========================================================================== */
-SELECT product_name, SUM(sales_amount) AS total_sales
-FROM `gold.fact_sales` f
-JOIN `gold.dim_products` p USING(product_key)
-GROUP BY product_name
+============================================================================ */
+SELECT
+    p.product_name,
+    SUM(f.sales_amount) AS total_sales
+FROM gold.fact_sales f
+JOIN gold.dim_products p USING (product_key)
+GROUP BY p.product_name
 ORDER BY total_sales DESC
 LIMIT 10;
 
-
 /* ============================================================================
    12️⃣ MONTH-OVER-MONTH SALES ANALYSIS
-   ============================================================================
-   Calculates MoM difference and percentage change in total sales.
-=========================================================================== */
+============================================================================ */
 WITH monthly_sales AS (
     SELECT
         DATE_FORMAT(order_date, '%Y-%m-01') AS order_month_start,
         SUM(sales_amount) AS total_sales
-    FROM `gold.fact_sales`
+    FROM gold.fact_sales
     WHERE order_date IS NOT NULL
     GROUP BY DATE_FORMAT(order_date, '%Y-%m-01')
 ),
