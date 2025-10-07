@@ -16,22 +16,22 @@
    Designed for MySQL (functions used: DATE_FORMAT, TIMESTAMPDIFF, DATEDIFF, STR_TO_DATE)
 
    📚 TABLE OF CONTENTS:
-   1️. Monthly Sales & Customer Metrics
-   2️. Monthly Sales by Month Start Date
-   3️. Monthly Sales Running Total & Moving Average Price
-   4️. Yearly Performance per Product
-   5️. Category Sales Contribution
-   6️. Product Cost Segmentation
-   7️. Customer Spending & Segmentation
-   8️. Customer Orders & Age Analysis
-   9️. Customer Summary Metrics
+   1. Monthly Sales & Customer Metrics
+   2. Monthly Sales by Month Start Date
+   3. Monthly Sales Running Total & Moving Average Price
+   4. Yearly Performance per Product
+   5. Category Sales Contribution
+   6. Product Cost Segmentation
+   7. Customer Spending & Segmentation
+   8. Customer Orders & Age Analysis
+   9. Customer Summary Metrics
    10. Null Data Check
    11. Top 10 Products by Sales
    12. Month-Over-Month Sales Analysis
 ============================================================================ */
 
 /* ============================================================================
-   1️. MONTHLY SALES & CUSTOMER METRICS
+   1. MONTHLY SALES & CUSTOMER METRICS
 ============================================================================ */
 SELECT
     YEAR(order_date) AS order_year,
@@ -45,7 +45,7 @@ GROUP BY YEAR(order_date), MONTH(order_date)
 ORDER BY YEAR(order_date), MONTH(order_date);
 
 /* ============================================================================
-   2️. MONTHLY SALES BY MONTH START DATE
+   2. MONTHLY SALES BY MONTH START DATE
 ============================================================================ */
 SELECT
     DATE_FORMAT(order_date, '%Y-%m-01') AS order_month_start,
@@ -58,7 +58,7 @@ GROUP BY DATE_FORMAT(order_date, '%Y-%m-01')
 ORDER BY order_month_start;
 
 /* ============================================================================
-   3️. MONTHLY SALES RUNNING TOTAL & MOVING AVERAGE PRICE
+   3. MONTHLY SALES RUNNING TOTAL & MOVING AVERAGE PRICE
 ============================================================================ */
 WITH monthly_sales AS (
     SELECT
@@ -80,7 +80,7 @@ FROM monthly_sales
 ORDER BY order_date;
 
 /* ============================================================================
-   4️. YEARLY PERFORMANCE PER PRODUCT
+   4. YEARLY PERFORMANCE PER PRODUCT
 ============================================================================ */
 WITH yearly_product_sales AS (
     SELECT
@@ -123,7 +123,7 @@ FROM sales_with_lag
 ORDER BY product_name, order_year;
 
 /* ============================================================================
-   5️. CATEGORY SALES CONTRIBUTION
+   5. CATEGORY SALES CONTRIBUTION
 ============================================================================ */
 WITH category_sales AS (
     SELECT
@@ -144,7 +144,7 @@ FROM category_sales
 ORDER BY total_sales DESC;
 
 /* ============================================================================
-   6️. PRODUCT COST SEGMENTATION
+   6. PRODUCT COST SEGMENTATION
 ============================================================================ */
 WITH product_segments AS (
     SELECT
@@ -168,7 +168,7 @@ GROUP BY cost_range
 ORDER BY total_products DESC;
 
 /* ============================================================================
-   7️. CUSTOMER SPENDING & SEGMENTATION
+   7. CUSTOMER SPENDING & SEGMENTATION
 ============================================================================ */
 WITH customer_spending AS (
     SELECT
@@ -198,7 +198,7 @@ FROM customer_spending
 ORDER BY customer_segment, total_spending DESC;
 
 /* ============================================================================
-   8️. CUSTOMER ORDERS & AGE ANALYSIS
+   8. CUSTOMER ORDERS & AGE ANALYSIS
 ============================================================================ */
 WITH base_query AS (
     SELECT
@@ -227,7 +227,7 @@ FROM base_query
 LIMIT 500;
 
 /* ============================================================================
-   9️⃣ CUSTOMER SUMMARY METRICS
+   9 CUSTOMER SUMMARY METRICS
 ============================================================================ */
 WITH base_data AS (
     SELECT
@@ -267,14 +267,14 @@ GROUP BY customer_key, customer_number, customer_name, age
 LIMIT 500;
 
 /* ============================================================================
-   10️⃣ NULL DATA CHECK
+   10. NULL DATA CHECK
 ============================================================================ */
 SELECT COUNT(*) AS null_orders
 FROM gold.fact_sales
 WHERE order_date IS NULL OR sales_amount IS NULL;
 
 /* ============================================================================
-   11️⃣ TOP 10 PRODUCTS BY SALES
+   11. TOP 10 PRODUCTS BY SALES
 ============================================================================ */
 SELECT
     p.product_name,
@@ -286,7 +286,7 @@ ORDER BY total_sales DESC
 LIMIT 10;
 
 /* ============================================================================
-   12️⃣ MONTH-OVER-MONTH SALES ANALYSIS
+   12. MONTH-OVER-MONTH SALES ANALYSIS
 ============================================================================ */
 WITH monthly_sales AS (
     SELECT
