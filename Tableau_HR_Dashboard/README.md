@@ -1,4 +1,4 @@
-# 🧍‍♀️ HR Analytics Dashboard – Tableau Project
+HR Analytics Dashboard – Tableau Project
 
 ## 🎯 Project Overview
 This project simulates a real-world **HR analytics dashboard** designed for managers to analyze key workforce insights — from employee demographics to income patterns and performance metrics.
@@ -72,4 +72,4 @@ The dataset was **generated using Python (Faker library)** and visualized using 
 
 ---
 
-✨ *This project demonstrates end-to-end HR data analysis — from data creation and preparation in Python to interactive dashboarding in Tableau.*
+✨ *This project demonstrates end-to-end HR data analysis - from data creation and preparation in Python to interactive dashboarding in Tableau.*
