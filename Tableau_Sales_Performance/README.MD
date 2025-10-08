@@ -2,7 +2,7 @@
 
 ## 🎯 Project Overview
 This Tableau project focuses on analyzing **sales performance and customer behavior** using interactive dashboards.  
-It provides stakeholders — including sales managers and executives — with clear visibility into key metrics, yearly trends, product performance, and customer insights.
+It provides stakeholders - including sales managers and executives — with clear visibility into key metrics, yearly trends, product performance, and customer insights.
 
 Two dashboards were built:
 1. **Sales Dashboard**
