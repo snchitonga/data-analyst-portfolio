@@ -1,3 +1,3 @@
-Welcome to my Data Analyst Portfolio! So glad you stopped by😊
+Welcome to my Data Analyst Portfolio! So glad you stopped by...
 
 Inside, you'll find my favorite projects that showcase my hands-on skills in SQL, Python, Power BI, Tableau, and Advanced Excel. My goal in every project is to go beyond cleaning and visualizing, I focus on translating raw data into clear, actionable stories that drive smart business decisions. Feel free to explore my e-commerce analysis and business dashboards, and check out the full code and documentation for the details!
